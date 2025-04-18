@@ -16,17 +16,27 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://moviesvibe-mqrf.onrender.com"
+]
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+import os
+# SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'unsafe-secret-key-dev-mode')
 SECRET_KEY = 'django-insecure-gnn^ern4_ql3!hv#m*oi@qx@#b_zc8xm=sr1%*hj(c)x)m!kge'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'moviesvibe-mqrf.onrender.com',
+    '127.0.0.1',
+    'localhost'
+]
+
 
 
 # Application definition
