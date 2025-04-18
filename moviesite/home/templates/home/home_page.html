@@ -1,0 +1,273 @@
+{% extends 'layout.html' %} {% load static %} {% block content %}
+
+<!-- Hero Section -->
+<style>
+  .hero-section-custom {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+      url('{% static "img/hero.jpg" %}') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    min-height: 70vh;
+  }
+  .section-header {
+    border-left: 4px solid #dc3545;
+    padding-left: 1rem;
+    margin: 2rem 0;
+  }
+
+  body {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+  }
+
+  .hero-section-custom {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+      url('{% static "img/hero.jpg" %}') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    min-height: 70vh;
+  }
+
+  .section-header {
+    color: #ffffff;
+    border-left: 4px solid #dc3545;
+    padding-left: 1rem;
+    margin: 2rem 0;
+  }
+
+  .card {
+    background-color: #333333;
+    border: 1px solid #dc3545;
+    transition: transform 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.3);
+  }
+
+  .card-title {
+    color: #ffffff;
+  }
+
+  .text-muted {
+    color: #a0a0a0 !important;
+  }
+
+  .btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
+  }
+
+  .btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+  }
+
+  .alert {
+    background-color: #2d2d2d;
+    border-color: #404040;
+    color: #e0e0e0;
+  }
+
+  .badge {
+    background-color: #404040;
+    color: white;
+  }
+</style>
+
+<section class="hero-section-custom text-white">
+  <div class="hero-image-container">
+    <img src="{% static 'img/hero.jpg' %}" alt="Hero" class="hero-img" />
+  </div>
+  <div class="container text-center py-5 hero-content">
+    <h1 class="display-4 fw-bold mb-4">Welcome to MoviesVibe</h1>
+    <p class="lead mb-4">Discover endless entertainment</p>
+    {% if not user.is_authenticated %}
+    <a href="{% url 'register' %}" class="btn btn-danger btn-lg px-5">
+      <i class="bi bi-play-btn me-2"></i>Get Started
+    </a>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Movie Content -->
+<div class="container py-5">
+  {% if search_query %}
+  <!-- Search Results -->
+  <div class="alert alert-info mb-5">
+    Search results for: <strong>"{{ search_query }}"</strong>
+    <a href="{% url 'home' %}" class="float-end text-decoration-none">
+      Clear search
+    </a>
+  </div>
+  <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 mb-5">
+    {% for movie in movies %}
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <a href="{% url 'movie_detail' movie.id %}">
+          <img
+            src="{{ movie.poster.url }}"
+            class="card-img-top"
+            alt="{{ movie.title }}"
+            style="height: 400px; object-fit: cover"
+          />
+        </a>
+        <div class="card-body">
+          <h5 class="card-title">{{ movie.title }}</h5>
+          <div class="d-flex justify-content-between align-items-center">
+            <small class="text-muted">{{ movie.release_date.year }}</small>
+            <span class="badge bg-primary">{{ movie.type|title }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <!-- Top Rated Movies -->
+  <section class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="section-header">Top Rated Movies</h2>
+      <a href="{% url 'type_movies' 'movie' %}" class="btn btn-outline-danger">
+        See All <i class="bi bi-chevron-right"></i>
+      </a>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+      {% for movie in top_rated_movies %}
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <a href="{% url 'movie_detail' movie.id %}">
+            <img
+              src="{{ movie.poster.url }}"
+              class="card-img-top"
+              alt="{{ movie.title }}"
+              style="height: 400px; object-fit: cover"
+            />
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">{{ movie.title }}</h5>
+            <div class="d-flex justify-content-between align-items-center">
+              <small class="text-muted">{{ movie.release_date.year }}</small>
+              <span class="badge bg-success"
+                >★ {{ movie.avg_rating|floatformat:1 }}</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Top Rated Series -->
+  <section class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="section-header">Top Rated Series</h2>
+      <a href="{% url 'type_movies' 'series' %}" class="btn btn-outline-danger">
+        See All <i class="bi bi-chevron-right"></i>
+      </a>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+      {% for series in top_rated_series %}
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <a href="{% url 'movie_detail' series.id %}">
+            <img
+              src="{{ series.poster.url }}"
+              class="card-img-top"
+              alt="{{ series.title }}"
+              style="height: 400px; object-fit: cover"
+            />
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">{{ series.title }}</h5>
+            <div class="d-flex justify-content-between align-items-center">
+              <small class="text-muted">{{ series.release_date.year }}</small>
+              <span class="badge bg-success"
+                >★ {{ series.avg_rating|floatformat:1 }}</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Recently Added -->
+  <section class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="section-header">Recently Added</h2>
+      <a href="{% url 'recent_movies' %}" class="btn btn-outline-danger">
+        See All <i class="bi bi-chevron-right"></i>
+      </a>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+      {% for recent in recent_movies %}
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <a href="{% url 'movie_detail' recent.id %}">
+            <img
+              src="{{ recent.poster.url }}"
+              class="card-img-top"
+              alt="{{ recent.title }}"
+              style="height: 400px; object-fit: cover"
+            />
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">{{ recent.title }}</h5>
+            <div class="d-flex justify-content-between align-items-center">
+              <small class="text-muted">{{ recent.release_date.year }}</small>
+              <span class="badge bg-info">{{ recent.type|title }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Highlighted Genres -->
+  {% for genre in highlighted_genres %}
+  <section class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="section-header">{{ genre.name }} Movies</h2>
+      <a
+        href="{% url 'genre_movies' genre.id %}"
+        class="btn btn-outline-danger"
+      >
+        See All <i class="bi bi-chevron-right"></i>
+      </a>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+      {% for movie in genre.movies %}
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <a href="{% url 'movie_detail' movie.id %}">
+            <img
+              src="{{ movie.poster.url }}"
+              class="card-img-top"
+              alt="{{ movie.title }}"
+              style="height: 400px; object-fit: cover"
+            />
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">{{ movie.title }}</h5>
+            <div class="d-flex justify-content-between align-items-center">
+              <small class="text-muted">{{ movie.release_date.year }}</small>
+              <span class="badge bg-primary">{{ movie.type|title }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endfor %} {% endif %} {% if not movies and search_query %}
+  <div class="alert alert-warning text-center">
+    No movies found matching your search.
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

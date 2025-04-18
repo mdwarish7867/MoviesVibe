@@ -1,0 +1,180 @@
+{% extends 'layout.html' %} {% load static %} {% block content %}
+
+<style>
+  /* Dark theme styling with red accent */
+  body {
+    background-color: #1c1c1c;
+    color: #f5f5f5;
+    
+  }
+
+  .section-header {
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  .alert-dark {
+    background-color: #2a2a2a;
+    color: #f8f9fa;
+    border-color: #444;
+  }
+
+  .alert-dark strong {
+    color: #dc3545;
+  }
+
+  .btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
+  }
+
+  .btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+  }
+
+  .card {
+    background-color: #2e2e2e;
+    border: 1px solid #444;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 0.75rem;
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(220, 53, 69, 0.25);
+    border-color: #dc3545;
+  }
+
+  .card-title {
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+
+  .card-img-top {
+    border-top-left-radius: 0.75rem;
+    border-top-right-radius: 0.75rem;
+  }
+
+  .badge.bg-success {
+    background-color: #28a745 !important;
+    color: #fff;
+    font-size: 0.8rem;
+  }
+
+  .badge.bg-danger {
+    background-color: #dc3545 !important;
+    font-size: 0.8rem;
+  }
+
+  .badge.bg-secondary {
+    background-color: #6c757d !important;
+    font-size: 0.75rem;
+  }
+
+  .text-muted {
+    color: #b0b0b0 !important;
+  }
+
+  .btn-group .btn-sm {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .alert-warning {
+    background-color: #3a3a3a;
+    color: #ffffff;
+    border-color: #dc3545;
+  }
+
+  .container {
+    background-color: #1f1f1f;
+    padding: 2rem;
+    border-radius: 1rem;
+    max-width: 1320px;
+    margin: 0 auto; /
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  a:hover {
+    opacity: 0.9;
+  }
+</style>
+
+<div class="container py-5">
+  {% if search_query %}
+  <div class="alert alert-dark mb-4">
+    Search results for: <strong>"{{ search_query }}"</strong>
+    <a
+      href="{{ request.path }}"
+      class="btn btn-sm btn-outline-danger float-end"
+    >
+      Clear Search
+    </a>
+  </div>
+  {% endif %}
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="section-header">
+      {{ title }} {% if genre %}<small class="text-muted d-block mt-2"
+        >{{ genre.description }}</small
+      >{% endif %}
+    </h2>
+    {% if not search_query %}
+    <div class="btn-group">
+      <a href="{% url 'home' %}" class="btn btn-outline-danger btn-sm">
+        <i class="bi bi-arrow-left"></i> Back to Home
+      </a>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+    {% for movie in movies %}
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <a href="{% url 'movie_detail' movie.id %}">
+          <img
+            src="{{ movie.poster.url }}"
+            class="card-img-top"
+            alt="{{ movie.title }}"
+            style="height: 300px; object-fit: cover"
+          />
+        </a>
+        <div class="card-body">
+          <h5 class="card-title">{{ movie.title }}</h5>
+          <div class="d-flex justify-content-between align-items-center">
+            <small class="text-muted">{{ movie.release_date.year }}</small>
+            <div class="d-flex gap-2">
+              {% if movie.avg_rating %}
+              <span class="badge bg-success"
+                >★ {{ movie.avg_rating|floatformat:1 }}</span
+              >
+              {% endif %}
+              <span class="badge bg-danger">{{ movie.type|title }}</span>
+            </div>
+          </div>
+          {% if genre %}
+          <div class="mt-2">
+            {% for genre in movie.genres.all %}
+            <span class="badge bg-secondary">{{ genre.name }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+      <div class="alert alert-warning text-center">
+        No movies found in this category.
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

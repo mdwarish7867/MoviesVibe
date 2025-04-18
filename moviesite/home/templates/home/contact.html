@@ -1,0 +1,167 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  .contact-container {
+    background: #1a1a1a;
+    min-height: 100vh;
+    padding: 2rem 0;
+  }
+
+  .contact-card {
+    background: #333333;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  }
+
+  .card-header {
+    background: #dc3545 !important;
+    border-radius: 15px 15px 0 0 !important;
+    padding: 2rem;
+  }
+
+  .form-control {
+    background: #1a1a1a;
+    border: 2px solid #444444;
+    color: white;
+    padding: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .form-control:focus {
+    background: #1a1a1a;
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+    color: white;
+  }
+
+  .form-label {
+    color: white !important;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .input-group-icon {
+    color: #dc3545;
+    font-size: 1.2rem;
+    margin-right: 0.8rem;
+  }
+
+  .submit-btn {
+    background: #dc3545;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+  }
+
+  .submit-btn:hover {
+    background: #ff4757;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+  }
+
+  .alert-custom {
+    background: #333333;
+    border: 1px solid #444444;
+    color: white;
+  }
+</style>
+
+<div class="contact-container">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        {% if messages %}
+        <div class="alert alert-custom alert-dismissible fade show mb-4">
+          {% for message in messages %}
+            {{ message }}
+          {% endfor %}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" style="filter: invert(1);"></button>
+        </div>
+        {% endif %}
+
+        <div class="card contact-card">
+          <div class="card-header text-center">
+            <h2 class="text-white mb-0">
+              <i class="bi bi-envelope-paper-heart me-2"></i>
+              Contact Us
+            </h2>
+          </div>
+
+          <div class="card-body p-4 p-lg-5">
+            <form method="post" class="needs-validation" novalidate>
+              {% csrf_token %}
+
+              <!-- Name Field -->
+              <div class="mb-4">
+                <label class="form-label">
+                  <i class="bi bi-person-circle input-group-icon"></i>
+                  Your Name
+                </label>
+                <input 
+                  type="text" 
+                  name="name" 
+                  class="form-control {% if form.name.errors %}is-invalid{% endif %}" 
+                  placeholder="John Doe"
+                  required
+                >
+                {% for error in form.name.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+              </div>
+
+              <!-- Email Field -->
+              <div class="mb-4">
+                <label class="form-label">
+                  <i class="bi bi-envelope-at input-group-icon"></i>
+                  Email Address
+                </label>
+                <input 
+                  type="email" 
+                  name="email" 
+                  class="form-control {% if form.email.errors %}is-invalid{% endif %}" 
+                  placeholder="john@example.com"
+                  required
+                >
+                {% for error in form.email.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+              </div>
+
+              <!-- Message Field -->
+              <div class="mb-4">
+                <label class="form-label">
+                  <i class="bi bi-chat-left-text input-group-icon"></i>
+                  Your Message
+                </label>
+                <textarea 
+                  name="message" 
+                  class="form-control {% if form.message.errors %}is-invalid{% endif %}" 
+                  rows="5" 
+                  placeholder="Type your message here..."
+                  required
+                ></textarea>
+                {% for error in form.message.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+              </div>
+
+              <!-- Submit Button -->
+              <div class="d-grid mt-5">
+                <button type="submit" class="btn submit-btn text-white">
+                  <i class="bi bi-send-check me-2"></i>
+                  Send Message
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
