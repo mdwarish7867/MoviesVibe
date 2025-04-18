@@ -1,5 +1,23 @@
 {% extends 'layout.html' %} {% load crispy_forms_tags %} {% block content %}
 <style>
+.form-control {
+  color: white !important; /* Force white text */
+}
+
+/* Placeholder styling */
+.form-control::placeholder {
+  color: #ccc !important;
+  opacity: 1 !important;
+}
+
+/* Autofill override */
+.form-control:-webkit-autofill,
+.form-control:-webkit-autofill:hover, 
+.form-control:-webkit-autofill:focus {
+  -webkit-text-fill-color: white !important;
+  -webkit-box-shadow: 0 0 0px 1000px #1a1a1a inset !important;
+}
+  
   .auth-container {
     background: #1a1a1a;
     min-height: 100vh;
