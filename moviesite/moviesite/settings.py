@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-gnn^ern4_ql3!hv#m*oi@qx@#b_zc8xm=sr1%*hj(c)x)m!kge
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['moviesvibe-qwt8.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
