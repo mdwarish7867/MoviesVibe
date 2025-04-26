@@ -1,0 +1,262 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  .add-movie-container {
+    background-color: #1a1a1a;
+    min-height: 100vh;
+    padding: 2rem 0;
+  }
+
+  .movie-form-card {
+    background-color: #333333;
+    border: 1px solid #444444;
+    border-radius: 8px;
+  }
+
+  .form-header {
+    background-color: #dc3545 !important;
+    border-radius: 8px 8px 0 0 !important;
+    padding: 1.5rem;
+  }
+
+  .dark-input {
+    background-color: #1a1a1a !important;
+    border: 1px solid #444444 !important;
+    color: white !important;
+    padding: 0.75rem;
+    width: 100%;
+  }
+
+  .dark-input:focus {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;
+  }
+
+  .form-check-label {
+    color: #e0e0e0 !important;
+  }
+
+  .form-check-input {
+  background-color: #1a1a1a !important;
+  border: 1px solid #444444 !important;
+}
+
+.form-check-input:checked {
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+}
+
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;
+}
+</style>
+
+<div class="add-movie-container">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-10">
+        <div class="card movie-form-card shadow-lg">
+          <div class="card-header form-header text-white">
+            <h3 class="mb-0"><i class="bi bi-film"></i> Add New Movie</h3>
+          </div>
+          <div class="card-body p-4">
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              
+              {% if form.errors %}
+              <div class="alert alert-danger mb-4">
+                <strong>Error!</strong> Please correct the errors below.
+              </div>
+              {% endif %}
+
+              <!-- Title -->
+              <div class="mb-4">
+                <label class="text-white">Movie Title <span class="text-danger">*</span></label>
+                <input 
+                  type="text" 
+                  name="title" 
+                  class="dark-input" 
+                  value="{{ form.title.value|default:'' }}"
+                  required
+                >
+                {% if form.title.errors %}
+                <div class="text-danger mt-2">
+                  {{ form.title.errors }}
+                </div>
+                {% endif %}
+              </div>
+
+              <!-- Basic Info Row -->
+              <div class="row mb-4">
+                <div class="col-md-4">
+                  <label class="text-white">Release Date <span class="text-danger">*</span></label>
+                  <input 
+                    type="date" 
+                    name="release_date" 
+                    class="dark-input" 
+                    value="{{ form.release_date.value|default:'' }}"
+                    required
+                  >
+                  {% if form.release_date.errors %}
+                  <div class="text-danger mt-2">
+                    {{ form.release_date.errors }}
+                  </div>
+                  {% endif %}
+                </div>
+                <div class="col-md-4">
+                  <label class="text-white">Type <span class="text-danger">*</span></label>
+                  <select name="type" class="dark-input" required>
+                    <option value="">Select a type</option>
+                    {% for value, label in form.type.field.choices %}
+                    <option value="{{ value }}" {% if form.type.value == value %}selected{% endif %}>
+                      {{ label }}
+                    </option>
+                    {% endfor %}
+                  </select>
+                  {% if form.type.errors %}
+                  <div class="text-danger mt-2">
+                    {{ form.type.errors }}
+                  </div>
+                  {% endif %}
+                </div>
+                <div class="col-md-4">
+                  <label class="text-white">Duration <span class="text-danger">*</span></label>
+                  <input 
+                    type="text" 
+                    name="duration" 
+                    class="dark-input" 
+                    value="{{ form.duration.value|default:'' }}"
+                    required
+                  >
+                  {% if form.duration.errors %}
+                  <div class="text-danger mt-2">
+                    {{ form.duration.errors }}
+                  </div>
+                  {% endif %}
+                </div>
+              </div>
+
+              <!-- Genres -->
+              <div class="mb-4">
+                <label class="text-white">Genres <span class="text-danger">*</span></label>
+                <div class="row">
+                  {% for genre in genres %}
+                  <div class="col-md-4">
+                    <div class="form-check">
+                      <input 
+                        type="checkbox" 
+                        name="genres" 
+                        value="{{ genre.id }}" 
+                        class="form-check-input" 
+                        {% if genre.id in form.genres.value %}checked{% endif %}
+                      />
+                      <label class="form-check-label">
+                        {{ genre.name }}
+                      </label>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+                {% if form.genres.errors %}
+                <div class="text-danger mt-2">
+                  {{ form.genres.errors }}
+                </div>
+                {% endif %}
+              </div>
+
+              <!-- Description -->
+              <div class="mb-4">
+                <label class="text-white">Description <span class="text-danger">*</span></label>
+                <textarea 
+                  name="description" 
+                  class="dark-input" 
+                  rows="3" 
+                  required
+                >{{ form.description.value|default:'' }}</textarea>
+                {% if form.description.errors %}
+                <div class="text-danger mt-2">
+                  {{ form.description.errors }}
+                </div>
+                {% endif %}
+              </div>
+
+              <!-- Cast & Crew -->
+              <div class="row mb-4">
+                <div class="col-md-6">
+                  <label class="text-white">Director <span class="text-danger">*</span></label>
+                  <input 
+                    type="text" 
+                    name="director" 
+                    class="dark-input" 
+                    value="{{ form.director.value|default:'' }}"
+                    required
+                  >
+                  {% if form.director.errors %}
+                  <div class="text-danger mt-2">
+                    {{ form.director.errors }}
+                  </div>
+                  {% endif %}
+                </div>
+                <div class="col-md-6">
+                  <label class="text-white">Cast <span class="text-danger">*</span></label>
+                  <textarea 
+                    name="cast" 
+                    class="dark-input" 
+                    required
+                  >{{ form.cast.value|default:'' }}</textarea>
+                  {% if form.cast.errors %}
+                  <div class="text-danger mt-2">
+                    {{ form.cast.errors }}
+                  </div>
+                  {% endif %}
+                </div>
+              </div>
+
+              <!-- Media Files -->
+              <div class="row mb-4">
+                <div class="col-md-6">
+                  <label class="text-white">Movie Poster <span class="text-danger">*</span></label>
+                  <input 
+                    type="file" 
+                    name="poster" 
+                    class="dark-input" 
+                    accept="image/*" 
+                    required
+                  >
+                  {% if form.poster.errors %}
+                  <div class="text-danger mt-2">
+                    {{ form.poster.errors }}
+                  </div>
+                  {% endif %}
+                </div>
+                <div class="col-md-6">
+                  <label class="text-white">Trailer URL</label>
+                  <input 
+                    type="url" 
+                    name="trailer_url" 
+                    class="dark-input" 
+                    value="{{ form.trailer_url.value|default:'' }}"
+                  >
+                  {% if form.trailer_url.errors %}
+                  <div class="text-danger mt-2">
+                    {{ form.trailer_url.errors }}
+                  </div>
+                  {% endif %}
+                </div>
+              </div>
+
+              <div class="d-grid gap-2 mt-4">
+                <button type="submit" class="btn btn-danger btn-lg py-3">
+                  <i class="bi bi-save"></i> Save Movie
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

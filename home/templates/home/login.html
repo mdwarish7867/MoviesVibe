@@ -1,0 +1,123 @@
+{% extends 'layout.html' %} {% load crispy_forms_tags %} {% block content %}
+<style>
+  
+.form-control {
+  color: white !important; /* Force white text */
+}
+
+/* Placeholder styling */
+.form-control::placeholder {
+  color: #ccc !important;
+  opacity: 1 !important;
+}
+
+/* Autofill override */
+.form-control:-webkit-autofill,
+.form-control:-webkit-autofill:hover, 
+.form-control:-webkit-autofill:focus {
+  -webkit-text-fill-color: white !important;
+  -webkit-box-shadow: 0 0 0px 1000px #1a1a1a inset !important;
+}
+
+  .auth-container {
+    background: #1a1a1a;
+    min-height: 100vh;
+    padding: 2rem 0;
+  }
+
+  .auth-card {
+    background: #333333;
+    border: 1px solid #444444;
+    border-radius: 8px;
+  }
+
+  .auth-header {
+    color: #ffffff;
+    border-bottom: 2px solid #dc3545;
+    padding-bottom: 1rem;
+  }
+
+  .form-control {
+    background: #1a1a1a;
+    border: 2px solid #444444;
+    color: white;
+    padding: 0.75rem;
+  }
+
+  .form-control:focus {
+    background: #1a1a1a;
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+  }
+
+  .auth-btn {
+    background: #dc3545;
+    border: none;
+    padding: 0.75rem;
+    transition: all 0.3s ease;
+  }
+
+  .auth-btn:hover {
+    background: #ff4757;
+    transform: translateY(-2px);
+  }
+</style>
+
+<div class="auth-container">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card auth-card shadow">
+          <div class="card-body p-4">
+            <h2 class="auth-header text-center mb-4">Login</h2>
+
+            {% if messages %}
+            <div class="alert alert-dark border-danger mb-4">
+              {% for message in messages %}
+              <div class="text-white">{{ message }}</div>
+              {% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="post">
+              {% csrf_token %}
+
+              <div class="mb-3">
+                <label class="text-white">Username</label>
+                <input
+                  type="text"
+                  name="username"
+                  class="form-control"
+                  required
+                />
+              </div>
+
+              <div class="mb-4">
+                <label class="text-white">Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  class="form-control"
+                  required
+                />
+              </div>
+
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn auth-btn text-white">
+                  Login
+                </button>
+                <a
+                  href="{% url 'register' %}"
+                  class="btn btn-link text-danger mt-3"
+                >
+                  Don't have an account? Register
+                </a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

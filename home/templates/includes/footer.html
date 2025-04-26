@@ -1,0 +1,74 @@
+{% now "Y" as current_year %}
+
+<footer
+  class="bg-black text-white pt-4 pb-3 mt-auto border-top border-secondary"
+>
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Brand Info -->
+      <div class="col-md-4 mb-4">
+        <h5 class="fw-bold">
+          <i class="bi-camera-reels-fill text-danger me-2"></i>MoviesVibe
+        </h5>
+        <p class="text-light">
+          Your go-to destination for discovering amazing movies by genre and
+          type. Stay updated and connected with us.
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-md-4 mb-4">
+        <h6 class="text-uppercase fw-bold mb-3">Quick Links</h6>
+        <ul class="list-unstyled">
+          <li>
+            <a href="{% url 'home' %}" class="text-white text-decoration-none"
+              ><i class="bi-house-fill me-2 text-danger"></i>Home</a
+            >
+          </li>
+          <li>
+            <a href="{% url 'about' %}" class="text-white text-decoration-none"
+              ><i class="bi-info-circle-fill me-2 text-danger"></i>About</a
+            >
+          </li>
+          <li>
+            <a
+              href="{% url 'contact' %}"
+              class="text-white text-decoration-none"
+              ><i class="bi-envelope-fill me-2 text-danger"></i>Contact</a
+            >
+          </li>
+          {% if user.is_authenticated and user.is_staff %}
+          <li>
+            <a
+              href="{% url 'add_movie' %}"
+              class="text-white text-decoration-none"
+              ><i class="bi-plus-circle-fill me-2 text-danger"></i>Add Movie</a
+            >
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+
+      <!-- Social Media -->
+      <div class="col-md-4 mb-4">
+        <h6 class="text-uppercase fw-bold mb-3">Follow Us</h6>
+        <div class="d-flex gap-3">
+          <a href="#" class="text-white fs-5"><i class="bi-facebook"></i></a>
+          <a href="#" class="text-white fs-5"><i class="bi-instagram"></i></a>
+          <a href="#" class="text-white fs-5"><i class="bi-twitter-x"></i></a>
+          <a href="#" class="text-white fs-5"><i class="bi-youtube"></i></a>
+          <a href="#" class="text-white fs-5"><i class="bi-github"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <hr class="border-secondary" />
+
+    <!-- Bottom -->
+    <div class="text-center small text-light">
+      &copy; {{ current_year }} <span class="text-danger">MoviesVibe</span>. All
+      rights reserved. . | Designed with ❤️ by
+      <strong class="text-danger">MD Warish</strong>
+    </div>
+  </div>
+</footer>

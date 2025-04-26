@@ -1,0 +1,53 @@
+{% extends 'layout.html' %} {% load static %} {% block content %}
+<style>
+  .admin-login-container {
+    background-color: #1a1a1a;
+    min-height: 100vh;
+    padding: 2rem 0;
+  }
+
+  .admin-card {
+    background-color: #333333;
+    border: 1px solid #444444;
+    border-radius: 8px;
+  }
+
+  .admin-header {
+    background-color: #dc3545 !important;
+    padding: 1.5rem;
+    border-radius: 8px 8px 0 0 !important;
+  }
+</style>
+
+<div class="admin-login-container">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card admin-card shadow-lg">
+          <div class="card-header admin-header text-white">
+            <h3 class="mb-0"><i class="bi bi-shield-lock"></i> Admin Login</h3>
+          </div>
+          <div class="card-body p-4">
+            <form method="post">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label class="text-white">Username</label>
+                <input type="text" name="username" 
+                    class="form-control dark-input" required>
+              </div>
+              <div class="mb-4">
+                <label class="text-white">Password</label>
+                <input type="password" name="password" 
+                    class="form-control dark-input" required>
+              </div>
+              <button type="submit" class="btn btn-danger w-100 py-2">
+                <i class="bi bi-box-arrow-in-right"></i> Login
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

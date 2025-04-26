@@ -1,0 +1,152 @@
+{% extends 'layout.html' %} {% load static %} {% block content %}
+<style>
+  /* Add this to both pages' styles */
+  .form-control {
+    color: white !important; /* Force white text */
+  }
+
+  /* Placeholder styling */
+  .form-control::placeholder {
+    color: #ccc !important;
+    opacity: 1 !important;
+  }
+
+  /* Autofill override */
+  .form-control:-webkit-autofill,
+  .form-control:-webkit-autofill:hover,
+  .form-control:-webkit-autofill:focus {
+    -webkit-text-fill-color: white !important;
+    -webkit-box-shadow: 0 0 0px 1000px #1a1a1a inset !important;
+  }
+
+  .auth-container {
+    background: #1a1a1a;
+    min-height: 100vh;
+    padding: 2rem 0;
+  }
+
+  .register-card {
+    background: #333333;
+    border: 1px solid #444444;
+    border-radius: 8px;
+  }
+
+  .auth-header {
+    color: #ffffff;
+    border-bottom: 2px solid #dc3545;
+    padding-bottom: 1rem;
+  }
+
+  .form-control {
+    background: #1a1a1a;
+    border: 2px solid #444444;
+    color: white;
+    padding: 0.75rem;
+  }
+
+  .form-control:focus {
+    background: #1a1a1a;
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+  }
+
+  .invalid-feedback {
+    color: #ff6b81;
+  }
+
+  .auth-btn {
+    background: #dc3545;
+    border: none;
+    padding: 0.75rem;
+    transition: all 0.3s ease;
+  }
+
+  .auth-btn:hover {
+    background: #ff4757;
+    transform: translateY(-2px);
+  }
+</style>
+
+<div class="auth-container">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card register-card shadow-lg">
+          <div class="card-body p-5">
+            <h2 class="auth-header text-center mb-4">Create Account</h2>
+
+            {% if form.errors %}
+            <div class="alert alert-dark border-danger mb-4">
+              {% for field, errors in form.errors.items %} {% for error in
+              errors %}
+              <div class="text-white">{{ error }}</div>
+              {% endfor %} 
+            </div>
+            {% endif %}
+
+            <form method="post" novalidate>
+              {% csrf_token %}
+
+              <!-- Username Field -->
+              <div class="mb-3">
+                <label class="text-white">Username</label>
+                <input
+                  type="text"
+                  name="username"
+                  class="form-control {% if form.username.errors %}is-invalid{% endif %}"
+                  required
+                />
+                {% for error in form.username.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+              </div>
+
+              <!-- Password Fields -->
+              <div class="mb-3">
+                <label class="text-white">Password</label>
+                <input
+                  type="password"
+                  name="password1"
+                  class="form-control {% if form.password1.errors %}is-invalid{% endif %}"
+                  required
+                />
+                {% for error in form.password1.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+              </div>
+
+              <div class="mb-4">
+                <label class="text-white">Confirm Password</label>
+                <input
+                  type="password"
+                  name="password2"
+                  class="form-control {% if form.password2.errors %}is-invalid{% endif %}"
+                  required
+                />
+                {% for error in form.password2.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+              </div>
+
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn auth-btn text-white">
+                  <i class="bi bi-person-plus me-2"></i>Register
+                </button>
+              </div>
+
+              <div class="text-center mt-4">
+                <a
+                  href="{% url 'login' %}"
+                  class="text-danger text-decoration-none"
+                >
+                  Already have an account? Login here
+                </a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
