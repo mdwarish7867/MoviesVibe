@@ -12,3 +12,5 @@ services:
         generateValue: true
       - key: DJANGO_SETTINGS_MODULE
         value: moviesite.settings
+      - key: DEBUG
+        value: False
