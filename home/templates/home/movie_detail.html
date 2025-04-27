@@ -1,5 +1,5 @@
 {% extends 'layout.html' %} {% load static crispy_forms_tags %} 
-{% block content %}
+{% block content%}
 <style>
   .movie-detail-container {
     background: #1a1a1a;
@@ -29,12 +29,33 @@
       <!-- Main Content -->
       <div class="col-lg-8">
         <div class="card detail-card mb-4">
-          <img src="{{ movie.poster.url }}" class="card-img-top" alt="{{ movie.title }}">
+          <img
+            src="{{ movie.poster.url }}"
+            class="card-img-top"
+            alt="{{ movie.title }}"
+          />
+
           <div class="card-body">
             <h1 class="text-white display-5">{{ movie.title }}</h1>
+            <!-- trailer_ulr -->
+            {% if movie.trailer_url %}
+            <div class="text-center mt-3">
+              <a
+                href="{{ movie.trailer_url }}"
+                class="btn btn-danger btn-lg"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="bi bi-play-btn-fill me-2"></i>Watch Trailer
+              </a>
+            </div>
+            {% endif %}
+
             <div class="d-flex gap-3 mb-4">
               <span class="badge bg-danger">{{ movie.type|title }}</span>
-              <span class="text-secondary">{{ movie.release_date }} • {{ movie.duration }}</span>
+              <span class="text-secondary"
+                >{{ movie.release_date }} • {{ movie.duration }}</span
+              >
             </div>
 
             <h4 class="text-white mb-3">Storyline</h4>
@@ -62,22 +83,23 @@
             <div class="card-body">
               <h5 class="text-white">Write a Review</h5>
               <form method="post">
-                {% csrf_token %}
-                {{ form|crispy }}
-                <button type="submit" class="btn auth-btn mt-3 bg-danger">Submit Review</button>
+                {% csrf_token %} {{ form|crispy }}
+                <button type="submit" class="btn auth-btn mt-3 bg-danger">
+                  Submit Review
+                </button>
               </form>
             </div>
           </div>
-          {% endif %}
-
-          {% for review in reviews %}
+          {% endif %} {% for review in reviews %}
           <div class="card review-card mb-3">
             <div class="card-body">
               <div class="d-flex justify-content-between">
                 <h5 class="text-white">{{ review.user.username }}</h5>
                 <span class="badge bg-danger">{{ review.rating }}/10</span>
               </div>
-              <p class="text-secondary"><small>{{ review.created_at|date:"F d, Y" }}</small></p>
+              <p class="text-secondary">
+                <small>{{ review.created_at|date:"F d, Y" }}</small>
+              </p>
               <p class="text-white-50">{{ review.comment }}</p>
             </div>
           </div>
@@ -93,7 +115,9 @@
           <div class="card-body">
             <h5 class="text-white mb-3">Details</h5>
             <ul class="list-group list-group-flush">
-              <li class="list-group-item bg-transparent d-flex justify-content-between">
+              <li
+                class="list-group-item bg-transparent d-flex justify-content-between"
+              >
                 <span class="text-white">Genre:</span>
                 <span>
                   {% for genre in movie.genres.all %}

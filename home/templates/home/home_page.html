@@ -241,7 +241,7 @@
       </a>
     </div>
     <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
-      {% for movie in genre.movies %}
+      {% for movie in genre.movies.all %}
       <div class="col">
         <div class="card h-100 shadow-sm">
           <a href="{% url 'movie_detail' movie.id %}">

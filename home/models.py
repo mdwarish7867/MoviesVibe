@@ -21,7 +21,7 @@ class Movie(models.Model):
     
     title = models.CharField(max_length=200)
     description = models.TextField()
-    genres = models.ManyToManyField(Genre)
+    genres = models.ManyToManyField(Genre, related_name='movies')
     type = models.CharField(max_length=20, choices=TYPE_CHOICES)
     release_date = models.DateField()
     duration = models.CharField(max_length=50)

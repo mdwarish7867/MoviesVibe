@@ -13,6 +13,13 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 
+
+# Trust Render's origin for CSRF
+CSRF_TRUSTED_ORIGINS = [
+    'https://moviesvibe-lt7u.onrender.com',
+    'http://localhost:8000',  # For local dev
+]
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 

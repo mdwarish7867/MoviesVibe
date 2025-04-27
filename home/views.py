@@ -28,7 +28,10 @@ def home(request):
 
         context = {
             'movies': movies,
-            'search_query': query
+            'search_query': query,
+            'highlighted_genres': Genre.objects.filter(
+                name__in=['Action', 'Adventure', 'Thriller']
+            ).prefetch_related('movies')   # ✅ Correct here
         }
     else:
         context = {
@@ -42,7 +45,7 @@ def home(request):
                             .order_by('-created_at')[:8],
             'highlighted_genres': Genre.objects.filter(
                 name__in=['Action', 'Adventure', 'Thriller']
-            ).prefetch_related('movie_set')
+            ).prefetch_related('movies')   # ✅ FIXED here also
         }
     
     return render(request, 'home/home_page.html', context)
