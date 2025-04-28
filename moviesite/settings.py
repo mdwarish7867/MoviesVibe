@@ -14,8 +14,6 @@ from pathlib import Path
 import os
 
 from pathlib import Path
-import dj_database_url
-from dotenv import load_dotenv
 
 
 # Trust Render's origin for CSRF
@@ -27,19 +25,14 @@ CSRF_TRUSTED_ORIGINS = [
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Load environment variables from .env file
-load_dotenv()
-
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-gnn^ern4_ql3!hv#m*oi@qx@#b_zc8xm=sr1%*hj(c)x)m!kge')
+SECRET_KEY = 'django-insecure-gnn^ern4_ql3!hv#m*oi@qx@#b_zc8xm=sr1%*hj(c)x)m!kge'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-gnn^ern4_ql3!hv#m*oi@qx@#b_zc8xm=sr1%*hj(c)x)m!kge')
-
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
@@ -72,6 +65,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -113,11 +107,12 @@ WSGI_APPLICATION = 'moviesite.wsgi.application'
 
 # Database Configuration
 DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),  # Default to SQLite
-        conn_max_age=600,  # Optional: Persistent connections
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
+
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
